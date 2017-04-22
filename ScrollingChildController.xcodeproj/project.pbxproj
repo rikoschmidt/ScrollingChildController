@@ -8,20 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		387DE7341EAB7DAD00C4FAA6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387DE7331EAB7DAD00C4FAA6 /* AppDelegate.swift */; };
-		387DE7361EAB7DAD00C4FAA6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387DE7351EAB7DAD00C4FAA6 /* ViewController.swift */; };
+		387DE7361EAB7DAD00C4FAA6 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387DE7351EAB7DAD00C4FAA6 /* ProfileController.swift */; };
 		387DE7391EAB7DAD00C4FAA6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 387DE7371EAB7DAD00C4FAA6 /* Main.storyboard */; };
 		387DE73B1EAB7DAD00C4FAA6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 387DE73A1EAB7DAD00C4FAA6 /* Assets.xcassets */; };
 		387DE73E1EAB7DAD00C4FAA6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 387DE73C1EAB7DAD00C4FAA6 /* LaunchScreen.storyboard */; };
+		387DE7461EAB7E7600C4FAA6 /* FeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387DE7451EAB7E7600C4FAA6 /* FeedController.swift */; };
+		387DE7481EAB7E9100C4FAA6 /* HistoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387DE7471EAB7E9100C4FAA6 /* HistoryController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		387DE7301EAB7DAD00C4FAA6 /* ScrollingChildController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScrollingChildController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		387DE7331EAB7DAD00C4FAA6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		387DE7351EAB7DAD00C4FAA6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		387DE7351EAB7DAD00C4FAA6 /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		387DE7381EAB7DAD00C4FAA6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		387DE73A1EAB7DAD00C4FAA6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		387DE73D1EAB7DAD00C4FAA6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		387DE73F1EAB7DAD00C4FAA6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		387DE7451EAB7E7600C4FAA6 /* FeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedController.swift; sourceTree = "<group>"; };
+		387DE7471EAB7E9100C4FAA6 /* HistoryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +59,9 @@
 			isa = PBXGroup;
 			children = (
 				387DE7331EAB7DAD00C4FAA6 /* AppDelegate.swift */,
-				387DE7351EAB7DAD00C4FAA6 /* ViewController.swift */,
+				387DE7351EAB7DAD00C4FAA6 /* ProfileController.swift */,
+				387DE7451EAB7E7600C4FAA6 /* FeedController.swift */,
+				387DE7471EAB7E9100C4FAA6 /* HistoryController.swift */,
 				387DE7371EAB7DAD00C4FAA6 /* Main.storyboard */,
 				387DE73A1EAB7DAD00C4FAA6 /* Assets.xcassets */,
 				387DE73C1EAB7DAD00C4FAA6 /* LaunchScreen.storyboard */,
@@ -135,7 +141,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				387DE7361EAB7DAD00C4FAA6 /* ViewController.swift in Sources */,
+				387DE7481EAB7E9100C4FAA6 /* HistoryController.swift in Sources */,
+				387DE7361EAB7DAD00C4FAA6 /* ProfileController.swift in Sources */,
+				387DE7461EAB7E7600C4FAA6 /* FeedController.swift in Sources */,
 				387DE7341EAB7DAD00C4FAA6 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
