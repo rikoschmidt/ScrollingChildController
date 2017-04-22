@@ -8,13 +8,10 @@
 
 import UIKit
 
-class ProfileCell: UITableViewCell {
-    
-}
-
 class ProfileController: UIViewController {
     let tableView = UITableView()
     let profileHeaderView = UIView()
+    let profileHeaderViewTitle = UILabel()
     let stickySegmentHeader = UIView()
     let segmentControl = UISegmentedControl()
     let containerCell = UITableViewCell(style: .default, reuseIdentifier: "ContainerCell")
@@ -25,7 +22,6 @@ class ProfileController: UIViewController {
         static let StickyHeaderViewHeight: CGFloat = 60
         static let ProfileHeaderViewHeight: CGFloat = 200
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +42,8 @@ class ProfileController: UIViewController {
         
         profileHeaderView.backgroundColor = UIColor.green
         profileHeaderView.frame.size.height = Constants.ProfileHeaderViewHeight
+        profileHeaderViewTitle.text = "Header"
+        profileHeaderView.addSubview(profileHeaderViewTitle)
         tableView.tableHeaderView = profileHeaderView
         
         stickySegmentHeader.backgroundColor = UIColor.blue
@@ -58,8 +56,6 @@ class ProfileController: UIViewController {
         
         containerCell.contentView.backgroundColor = UIColor.purple
         containerCell.selectionStyle = .none
-        
-        tableView.scrollIndicatorInsets = UIEdgeInsets(top: 260, left: 0, bottom: 0, right: 0)
     }
     
     private func addConstraints() {
@@ -68,6 +64,10 @@ class ProfileController: UIViewController {
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        
+        profileHeaderViewTitle.translatesAutoresizingMaskIntoConstraints = false
+        profileHeaderViewTitle.centerXAnchor.constraint(equalTo: profileHeaderView.centerXAnchor).isActive = true
+        profileHeaderViewTitle.centerYAnchor.constraint(equalTo: profileHeaderView.centerYAnchor).isActive = true
         
         segmentControl.translatesAutoresizingMaskIntoConstraints = false
         segmentControl.topAnchor.constraint(equalTo: stickySegmentHeader.topAnchor, constant: 10).isActive = true
@@ -80,11 +80,13 @@ class ProfileController: UIViewController {
         if feedController == nil {
             feedController = FeedController()
         }
-        
+
+        if let historyController = historyController {
+            historyController.view.removeFromSuperview()
+            historyController.removeFromParentViewController()
+        }
+
         guard let feedController = feedController else { return }
-        feedController.view.removeFromSuperview()
-        feedController.removeFromParentViewController()
-        
         addChildViewController(feedController)
         containerCell.contentView.addSubview(feedController.view)
         
@@ -97,11 +99,13 @@ class ProfileController: UIViewController {
         if historyController == nil {
             historyController = HistoryController()
         }
-        
+
+        if let feedController = feedController {
+            feedController.view.removeFromSuperview()
+            feedController.removeFromParentViewController()
+        }
+
         guard let historyController = historyController else { return }
-        historyController.view.removeFromSuperview()
-        historyController.removeFromParentViewController()
-        
         addChildViewController(historyController)
         containerCell.contentView.addSubview(historyController.view)
         
