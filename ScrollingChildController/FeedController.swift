@@ -11,6 +11,7 @@ import UIKit
 class FeedController: UIViewController {
 
     let tableView = UITableView()
+    var didScroll: (UIScrollView) -> () = { _ in }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,5 +51,9 @@ extension FeedController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.textLabel?.text = "Feed \(indexPath.row)"
         return cell
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        didScroll(scrollView)
     }
 }

@@ -9,14 +9,14 @@
 import UIKit
 
 class ProfileController: UIViewController {
-    let tableView = UITableView()
+    let containerView = UIView()
     let profileHeaderView = UIView()
     let profileHeaderViewTitle = UILabel()
     let stickySegmentHeader = UIView()
     let segmentControl = UISegmentedControl()
-    let containerCell = UITableViewCell(style: .default, reuseIdentifier: "ContainerCell")
     var feedController: FeedController?
     var historyController: HistoryController?
+    
     
     struct Constants {
         static let StickyHeaderViewHeight: CGFloat = 60
@@ -27,6 +27,7 @@ class ProfileController: UIViewController {
         super.viewDidLoad()
      
         title = "Profile"
+        automaticallyAdjustsScrollViewInsets = false
         
         setupViews()
         addConstraints()
@@ -34,41 +35,40 @@ class ProfileController: UIViewController {
     }
     
     private func setupViews() {
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.backgroundColor = UIColor.yellow
-        view.addSubview(tableView)
+        view.addSubview(containerView)
+        view.addSubview(profileHeaderView)
+        view.addSubview(stickySegmentHeader)
         
         profileHeaderView.backgroundColor = UIColor.green
-        profileHeaderView.frame.size.height = Constants.ProfileHeaderViewHeight
+        profileHeaderView.isUserInteractionEnabled = true
+        let viewWidth = view.frame.size.width
+        profileHeaderView.frame = CGRect(x: 0, y: 64, width: viewWidth, height: Constants.ProfileHeaderViewHeight)
         profileHeaderViewTitle.text = "Header"
         profileHeaderView.addSubview(profileHeaderViewTitle)
-        tableView.tableHeaderView = profileHeaderView
-        
+
         stickySegmentHeader.backgroundColor = UIColor.blue
+        stickySegmentHeader.isUserInteractionEnabled = true
+        stickySegmentHeader.frame = CGRect(x: 0, y: 64 + Constants.ProfileHeaderViewHeight, width: viewWidth, height: Constants.StickyHeaderViewHeight)
+        
         segmentControl.backgroundColor = UIColor.white
         segmentControl.insertSegment(withTitle: "Feed", at: 0, animated: false)
         segmentControl.insertSegment(withTitle: "History", at: 1, animated: false)
         segmentControl.selectedSegmentIndex = 0
         segmentControl.addTarget(self, action: #selector(segmentControlDidChangeValue), for: .valueChanged)
         stickySegmentHeader.addSubview(segmentControl)
-        
-        containerCell.contentView.backgroundColor = UIColor.purple
-        containerCell.selectionStyle = .none
     }
     
     private func addConstraints() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        containerView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        containerView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         
         profileHeaderViewTitle.translatesAutoresizingMaskIntoConstraints = false
         profileHeaderViewTitle.centerXAnchor.constraint(equalTo: profileHeaderView.centerXAnchor).isActive = true
         profileHeaderViewTitle.centerYAnchor.constraint(equalTo: profileHeaderView.centerYAnchor).isActive = true
-        
+
         segmentControl.translatesAutoresizingMaskIntoConstraints = false
         segmentControl.topAnchor.constraint(equalTo: stickySegmentHeader.topAnchor, constant: 10).isActive = true
         segmentControl.bottomAnchor.constraint(equalTo: stickySegmentHeader.bottomAnchor, constant: -10).isActive = true
@@ -87,10 +87,33 @@ class ProfileController: UIViewController {
         }
 
         guard let feedController = feedController else { return }
-        addChildViewController(feedController)
-        containerCell.contentView.addSubview(feedController.view)
         
-        feedController.view.frame = containerCell.bounds
+        feedController.tableView.contentInset.top = 64 + Constants.ProfileHeaderViewHeight + Constants.StickyHeaderViewHeight
+        feedController.tableView.contentOffset.y = -64 - Constants.ProfileHeaderViewHeight - Constants.StickyHeaderViewHeight
+        feedController.tableView.showsVerticalScrollIndicator = false
+        
+        feedController.didScroll = { scrollView in
+            let contentOffsetY = scrollView.contentOffset.y
+            let contentInsetTop = scrollView.contentInset.top
+            let realContentOffset = contentOffsetY + contentInsetTop
+            
+            self.profileHeaderView.frame.origin.y = -realContentOffset + 64
+            
+            let newStickHeaderPositionY = -realContentOffset + 64 + Constants.ProfileHeaderViewHeight
+            
+            if newStickHeaderPositionY > 64 {
+                self.stickySegmentHeader.frame.origin.y = newStickHeaderPositionY
+            }else {
+                self.stickySegmentHeader.frame.origin.y = 64
+            }
+//
+//            
+//            print("Content Offset :\(contentOffsetY) Content Inset: \(contentInsetTop) Real Content Offset Y \(realContentOffset)")
+        }
+        addChildViewController(feedController)
+        containerView.addSubview(feedController.view)
+        
+        feedController.view.frame = containerView.bounds
         feedController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         feedController.didMove(toParentViewController: self)
     }
@@ -106,10 +129,30 @@ class ProfileController: UIViewController {
         }
 
         guard let historyController = historyController else { return }
-        addChildViewController(historyController)
-        containerCell.contentView.addSubview(historyController.view)
+        historyController.tableView.contentInset.top = 64 + Constants.ProfileHeaderViewHeight + Constants.StickyHeaderViewHeight
+        historyController.tableView.contentOffset.y = -64 - Constants.ProfileHeaderViewHeight - Constants.StickyHeaderViewHeight
+        historyController.tableView.showsVerticalScrollIndicator = false
+
+        historyController.didScroll = { scrollView in
+            let contentOffsetY = scrollView.contentOffset.y
+            let contentInsetTop = scrollView.contentInset.top
+            let realContentOffset = contentOffsetY + contentInsetTop
+            
+            self.profileHeaderView.frame.origin.y = -realContentOffset + 64
+            
+            let newStickHeaderPositionY = -realContentOffset + 64 + Constants.ProfileHeaderViewHeight
+            
+            if newStickHeaderPositionY > 64 {
+                self.stickySegmentHeader.frame.origin.y = newStickHeaderPositionY
+            }else {
+                self.stickySegmentHeader.frame.origin.y = 64
+            }
+        }
         
-        historyController.view.frame = containerCell.bounds
+        addChildViewController(historyController)
+        containerView.addSubview(historyController.view)
+        
+        historyController.view.frame = containerView.bounds
         historyController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         historyController.didMove(toParentViewController: self)
     }
@@ -122,49 +165,6 @@ class ProfileController: UIViewController {
             addHistoryControllerAsChild()
         default:
             print("Out of range")
-        }
-    }
-}
-
-extension ProfileController: UITableViewDelegate, UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return containerCell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        var cellHeight = view.frame.size.height
-        
-        if let navigationBarHeight = navigationController?.navigationBar.frame.size.height {
-            cellHeight -= navigationBarHeight
-        }
-        
-        return cellHeight
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        switch section {
-        case 0:
-            return stickySegmentHeader
-        default:
-            return UIView()
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        switch section {
-        case 0:
-            return Constants.StickyHeaderViewHeight
-        default:
-            return 0
         }
     }
 }

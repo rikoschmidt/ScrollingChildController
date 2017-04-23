@@ -11,6 +11,7 @@ import UIKit
 class HistoryController: UIViewController {
     
     let tableView = UITableView()
+    var didScroll: (UIScrollView) -> () = { _ in }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,12 +44,16 @@ extension HistoryController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return 100
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.textLabel?.text = "History \(indexPath.row)"
         return cell
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        didScroll(scrollView)
     }
 }
